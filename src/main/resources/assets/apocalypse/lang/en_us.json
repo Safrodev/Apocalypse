@@ -1,0 +1,7 @@
+{
+  "command.apocalypse.invalid_time": "Invalid time format provided.",
+  "command.apocalypse.invalid_type": "This apocalypse type is invalid or unavailable. You may need to install another mod.",
+  "command.apocalypse.already_begun": "An apocalypse has already started, you may not start a new one.",
+  "command.apocalypse.start": "The Apocalypse will begin in %s %s!",
+  "command.apocalypse.start.system": "Starting %s in %s %s."
+}
