@@ -5,6 +5,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
+import safro.apocalypse.network.NetworkHelper;
+import safro.apocalypse.network.UpdateCountdownPacket;
 
 public class ApocalypseData extends SavedData {
     public static final String KEY = "apocalypse_data";
@@ -22,25 +24,20 @@ public class ApocalypseData extends SavedData {
         if (INSTANCE == null) {
             ServerLevel level = server.getLevel(Level.OVERWORLD);
             INSTANCE = level.getDataStorage().computeIfAbsent(ApocalypseData::load, ApocalypseData::new, KEY);
-            INSTANCE.type = type;
-            INSTANCE.tick = ticksToStart;
-            INSTANCE.setDirty();
-            return true;
-        } else {
-            if (INSTANCE.started) {
-                return false;
-            }
-
-            INSTANCE.type = type;
-            INSTANCE.tick = ticksToStart;
-            INSTANCE.setDirty();
-            return true;
+        } else if (INSTANCE.started) {
+            return false;
         }
+
+        INSTANCE.type = type;
+        INSTANCE.tick = ticksToStart;
+        INSTANCE.setDirty();
+        return true;
     }
 
     public void tick() {
         if (!this.started) {
             if (this.tick > 0) {
+                NetworkHelper.sendToAllPlayers(new UpdateCountdownPacket(this.tick));
                 --this.tick;
 
                 if (this.tick == 0) {
