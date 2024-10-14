@@ -10,7 +10,7 @@ public class NetworkHelper {
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(Apocalypse.id("main"), () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
 
     public static void register() {
-        CHANNEL.registerMessage(0, UpdateCountdownPacket.class, UpdateCountdownPacket::write, UpdateCountdownPacket::new, UpdateCountdownPacket::onReceive);
+        CHANNEL.registerMessage(0, SyncApocalypsePacket.class, SyncApocalypsePacket::write, SyncApocalypsePacket::new, SyncApocalypsePacket::onReceive);
     }
 
     public static void sendToAllPlayers(S2CPacket packet) {

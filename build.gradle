@@ -79,6 +79,7 @@ dependencies {
 
 mixin {
     add sourceSets.main, 'apocalypse.refmap.json'
+    config 'apocalypse.mixins.json'
 }
 
 tasks.named('processResources', ProcessResources).configure {

@@ -6,21 +6,24 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraftforge.fml.ModList;
 import org.jetbrains.annotations.Nullable;
+import safro.apocalypse.ApocalypseConfig;
 
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 public enum ApocalypseType {
-    SOLAR_APOCALYPSE(() -> true),
+    SOLAR_APOCALYPSE(() -> true, ApocalypseConfig.saStage1, ApocalypseConfig.saStage2, ApocalypseConfig.saStage3),
     WITHER_STORM(() -> ModList.get().isLoaded("witherstormmod")),
-    METEOR_SHOWER(() -> true),
+    ZOMBIE_HORDE(() -> true),
     BLIZZARD(() -> true);
 
     final Supplier<Boolean> condition;
+    final int[] stages;
 
-    ApocalypseType(Supplier<Boolean> condition) {
+    ApocalypseType(Supplier<Boolean> condition, int... stages) {
         this.condition = condition;
+        this.stages = stages;
     }
 
     @Nullable
@@ -38,5 +41,9 @@ public enum ApocalypseType {
 
     public boolean canStart() {
         return condition.get();
+    }
+
+    public int[] getStages() {
+        return stages;
     }
 }

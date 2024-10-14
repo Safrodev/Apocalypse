@@ -1,70 +1,126 @@
 package safro.apocalypse.api;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
+import safro.apocalypse.Apocalypse;
 import safro.apocalypse.network.NetworkHelper;
-import safro.apocalypse.network.UpdateCountdownPacket;
+import safro.apocalypse.network.SyncApocalypsePacket;
 
 public class ApocalypseData extends SavedData {
     public static final String KEY = "apocalypse_data";
-    public static ApocalypseData INSTANCE;
+    public static ApocalypseData CLIENT_INSTANCE;
     private ApocalypseType type;
-    private long tick;
+    private long countdownTick;
     private boolean started;
+    private long tick;
 
     public ApocalypseData() {
-        this.tick = -1;
+        this.countdownTick = -1;
+        this.tick = 0;
         this.setDirty();
     }
 
-    public static boolean begin(MinecraftServer server, ApocalypseType type, long ticksToStart) {
-        if (INSTANCE == null) {
-            ServerLevel level = server.getLevel(Level.OVERWORLD);
-            INSTANCE = level.getDataStorage().computeIfAbsent(ApocalypseData::load, ApocalypseData::new, KEY);
-        } else if (INSTANCE.started) {
-            return false;
+    public static ApocalypseData get(Level world) {
+        if (!world.isClientSide()) {
+            return get(((ServerLevel)world).getServer());
+        } else {
+            return CLIENT_INSTANCE;
         }
+    }
 
-        INSTANCE.type = type;
-        INSTANCE.tick = ticksToStart;
-        INSTANCE.setDirty();
-        return true;
+    public static ApocalypseData get(MinecraftServer server) {
+        ServerLevel serverLevel = server.overworld();
+        return serverLevel.getDataStorage().computeIfAbsent(ApocalypseData::load, ApocalypseData::new, KEY);
+    }
+
+    public static boolean begin(MinecraftServer server, ApocalypseType type, long ticksToStart) {
+        ApocalypseData data = get(server);
+        if (!data.started) {
+            data.type = type;
+            data.countdownTick = ticksToStart;
+            data.setDirty();
+            return true;
+        }
+        return false;
     }
 
     public void tick() {
         if (!this.started) {
-            if (this.tick > 0) {
-                NetworkHelper.sendToAllPlayers(new UpdateCountdownPacket(this.tick));
-                --this.tick;
+            if (this.countdownTick > 0) {
+                --this.countdownTick;
 
-                if (this.tick == 0) {
+                if (this.countdownTick == 0) {
+                    this.countdownTick = -1;
                     this.started = true;
                     this.setDirty();
                 }
             }
 
+            if (this.countdownTick % 20 == 0) {
+                this.setDirty();
+            }
+        } else {
+            this.tick++;
+
             if (this.tick % 20 == 0) {
                 this.setDirty();
             }
         }
+        NetworkHelper.sendToAllPlayers(new SyncApocalypsePacket(this.type, this.countdownTick, this.started, this.tick));
+    }
+
+    public boolean hasStarted(ApocalypseType match) {
+        return this.started && this.type != null && match == this.type;
+    }
+
+    public long getCountdownTick() {
+        return this.countdownTick;
+    }
+
+    // TODO: Set back to 24000L after testing
+    public int getDaysSinceStart() {
+        return this.started ? (int)(this.tick / 1200L) : -1;
     }
 
     public static ApocalypseData load(CompoundTag tag) {
         ApocalypseData data = new ApocalypseData();
-        data.type = ApocalypseType.parseType(tag.getString("Type"));
+        if (tag.contains("Type")) {
+            data.type = ApocalypseType.parseType(tag.getString("Type"));
+        }
         data.started = tag.getBoolean("Started");
+        data.countdownTick = tag.getLong("CountdownTick");
         data.tick = tag.getLong("Tick");
+        return data;
+    }
+
+    public static ApocalypseData fromData(ApocalypseType t, long ct, boolean st, long ticks) {
+        ApocalypseData data = new ApocalypseData();
+        data.type = t;
+        data.countdownTick = ct;
+        data.started = st;
+        data.tick = ticks;
         return data;
     }
 
     @Override
     public CompoundTag save(CompoundTag tag) {
-        tag.putString("Type", this.type.name());
+        if (this.type != null) {
+            tag.putString("Type", this.type.name());
+        }
+        tag.putLong("CountdownTick", this.countdownTick);
         tag.putLong("Tick", this.tick);
         tag.putBoolean("Started", this.started);
         return tag;
+    }
+
+    public void write(FriendlyByteBuf buf) {
+        buf.writeUtf(this.type == null ? "None" : this.type.name());
+        buf.writeLong(this.countdownTick);
+        buf.writeBoolean(this.started);
+        buf.writeLong(this.tick);
     }
 }

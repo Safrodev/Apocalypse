@@ -15,17 +15,13 @@ public class CountdownOverlay implements IGuiOverlay {
     @Override
     public void render(ForgeGui forgeGui, GuiGraphics graphics, float partialTicks, int screenWidth, int screenHeight) {
         Minecraft client = Minecraft.getInstance();
-        int secondsLeft = (int)(SECONDS_LEFT + partialTicks);
-        if (SECONDS_LEFT >= 0) {
-            int x = screenWidth / 2;
-            int y = (screenHeight / 2) + 15;
+        int secondsLeft = (int)(SECONDS_LEFT);
+        if (secondsLeft >= 0) {
+            int x = screenWidth / 2 - 8;
+            int y = 1;
             String time = StringUtil.formatTickDuration(secondsLeft);
             graphics.fillGradient(x - 1, y - 2, x + client.font.width(time) + 1, y + client.font.lineHeight + 1, -1072689136, -804253680);
-            graphics.drawString(client.font, time, x, y, 16777215);
-
-            if (SECONDS_LEFT == 0) {
-                SECONDS_LEFT = -1;
-            }
+            graphics.drawString(client.font, time, x, y, secondsLeft <= 200 ? 0xd83d17 : 16777215);
         }
     }
 }
