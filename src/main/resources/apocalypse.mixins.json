@@ -5,7 +5,18 @@
   "refmap": "apocalypse.refmap.json",
   "mixins": [
     "solar.WaterFluidMixin",
-    "solar.SpreadingSnowDirtBlockMixin"
+    "solar.SpreadingSnowDirtBlockMixin",
+    "solar.CropBlockMixin",
+    "solar.SaplingBlockMixin",
+    "solar.LeavesBlockMixin",
+    "solar.SugarCaneBlockMixin",
+    "solar.FarmBlockMixin",
+    "solar.IceBlockMixin",
+    "solar.SnowLayerBlockMixin",
+    "solar.StemBlockMixin",
+    "solar.BambooStalkBlockMixin",
+    "solar.FluidTypeMixin",
+    "solar.FluidMixin"
   ],
   "minVersion": "0.8"
 }

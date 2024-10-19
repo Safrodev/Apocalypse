@@ -13,6 +13,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 import safro.apocalypse.api.ApocalypseData;
 import safro.apocalypse.api.ApocalypseType;
+import safro.apocalypse.event.CommonEvents;
 import safro.apocalypse.network.NetworkHelper;
 
 @Mod(Apocalypse.MODID)
@@ -62,6 +63,6 @@ public class Apocalypse {
         if (map.length == 0) {
             return true;
         }
-        return days <= map[stage];
+        return days >= map[stage];
     }
 }

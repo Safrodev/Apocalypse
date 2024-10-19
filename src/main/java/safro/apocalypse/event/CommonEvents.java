@@ -1,9 +1,10 @@
-package safro.apocalypse;
+package safro.apocalypse.event;
 
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import safro.apocalypse.Apocalypse;
 import safro.apocalypse.api.ApocalypseData;
 import safro.apocalypse.command.StartApocalypseCommand;
 
