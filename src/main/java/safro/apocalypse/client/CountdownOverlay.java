@@ -21,7 +21,7 @@ public class CountdownOverlay implements IGuiOverlay {
             int y = 1;
             String time = StringUtil.formatTickDuration(secondsLeft);
             graphics.fillGradient(x - 1, y - 2, x + client.font.width(time) + 1, y + client.font.lineHeight + 1, -1072689136, -804253680);
-            graphics.drawString(client.font, time, x, y, secondsLeft <= 200 ? 0xd83d17 : 16777215);
+            graphics.drawString(client.font, time, x, y, secondsLeft <= 220 ? 0xd83d17 : 16777215);
         }
     }
 }

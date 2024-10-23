@@ -51,7 +51,7 @@ public class StartApocalypseCommand {
             throw UNAVAILABLE_TYPE.create();
         }
 
-        if (ApocalypseData.begin(source.getServer(), type, (long)countdown * timeformat.multiplier)) {
+        if (ApocalypseData.queue(source.getServer(), type, (long)countdown * timeformat.multiplier)) {
             String time = timeformat.name().toLowerCase();
             for (ServerPlayer player : source.getServer().getPlayerList().getPlayers()) {
                 player.sendSystemMessage(Component.translatable("command.apocalypse.start", countdown, time));

@@ -6,7 +6,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
-import safro.apocalypse.Apocalypse;
+import safro.apocalypse.event.CommonEvents;
 import safro.apocalypse.network.NetworkHelper;
 import safro.apocalypse.network.SyncApocalypsePacket;
 
@@ -37,7 +37,7 @@ public class ApocalypseData extends SavedData {
         return serverLevel.getDataStorage().computeIfAbsent(ApocalypseData::load, ApocalypseData::new, KEY);
     }
 
-    public static boolean begin(MinecraftServer server, ApocalypseType type, long ticksToStart) {
+    public static boolean queue(MinecraftServer server, ApocalypseType type, long ticksToStart) {
         ApocalypseData data = get(server);
         if (!data.started) {
             data.type = type;
@@ -48,7 +48,7 @@ public class ApocalypseData extends SavedData {
         return false;
     }
 
-    public void tick() {
+    public void tick(ServerLevel overworld) {
         if (!this.started) {
             if (this.countdownTick > 0) {
                 --this.countdownTick;
@@ -56,6 +56,7 @@ public class ApocalypseData extends SavedData {
                 if (this.countdownTick == 0) {
                     this.countdownTick = -1;
                     this.started = true;
+                    CommonEvents.startApocalypse(this.type, overworld);
                     this.setDirty();
                 }
             }
