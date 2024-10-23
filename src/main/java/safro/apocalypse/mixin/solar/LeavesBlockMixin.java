@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,12 +26,10 @@ public class LeavesBlockMixin {
         cir.setReturnValue(true);
     }
 
-
     @Inject(method = "randomTick", at = @At("HEAD"), cancellable = true)
     private void solarDestroyLeaves(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom, CallbackInfo ci) {
         if (SolarUtil.isBlockExposed(pLevel, pPos, 1)) {
-            Block.dropResources(pState, pLevel, pPos);
-            pLevel.destroyBlock(pPos, false);
+            pLevel.setBlock(pPos, Blocks.AIR.defaultBlockState(), 3);
             ci.cancel();
         }
     }

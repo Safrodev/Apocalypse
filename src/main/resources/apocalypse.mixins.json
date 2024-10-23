@@ -16,7 +16,12 @@
     "solar.StemBlockMixin",
     "solar.BambooStalkBlockMixin",
     "solar.FluidTypeMixin",
-    "solar.FluidMixin"
+    "solar.FluidMixin",
+    "solar.MobMixin",
+    "solar.PlayerMixin"
+  ],
+  "client": [
+    "solar.LevelRendererMixin"
   ],
   "minVersion": "0.8"
 }
