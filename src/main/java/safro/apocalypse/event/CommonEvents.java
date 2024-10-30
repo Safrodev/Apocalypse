@@ -16,7 +16,7 @@ import safro.apocalypse.command.StartApocalypseCommand;
 public class CommonEvents {
 
     public static void startApocalypse(ApocalypseType type, ServerLevel level) {
-        if (type == ApocalypseType.WITHER_STORM && ModList.get().isLoaded("witherstormmod")) {
+        if (type == ApocalypseType.WITHER_STORM && type.canStart()) {
             WitherStormHandler.spawn(level);
         }
     }
