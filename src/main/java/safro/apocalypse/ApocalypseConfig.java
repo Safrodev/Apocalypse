@@ -11,6 +11,12 @@ import java.util.List;
 public class ApocalypseConfig {
     private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
+    private static final ForgeConfigSpec.IntValue TIMER_X = BUILDER.comment("The x-offset for the countdown timer. Position is relative to the center of the screen.")
+            .defineInRange("timerX", 120, Integer.MIN_VALUE, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.IntValue TIMER_Y = BUILDER.comment("The y-offset for the countdown timer. Position is relative to the bottom of the screen.")
+            .defineInRange("timerY", -3, Integer.MIN_VALUE, Integer.MAX_VALUE);
+
     private static final ForgeConfigSpec.IntValue SA_STAGE_1 = BUILDER.comment("Number of days until stage 1 of the Solar Apocalypse begins.")
             .defineInRange("saStage1", 2, 0, Integer.MAX_VALUE);
 
@@ -28,6 +34,9 @@ public class ApocalypseConfig {
 
     static final ForgeConfigSpec SPEC = BUILDER.build();
 
+    public static int timerXOffset;
+    public static int timerYOffset;
+
     public static int saStage1;
     public static int saStage2;
     public static int saStage3;
@@ -38,6 +47,8 @@ public class ApocalypseConfig {
 
     @SubscribeEvent
     static void onLoad(final ModConfigEvent event) {
+        timerXOffset = TIMER_X.get();
+        timerYOffset = TIMER_Y.get();
         saStage1 = SA_STAGE_1.get();
         saStage2 = SA_STAGE_2.get();
         saStage3 = SA_STAGE_3.get();
