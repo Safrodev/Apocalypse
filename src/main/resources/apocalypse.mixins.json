@@ -21,7 +21,6 @@
     "solar.PlayerMixin"
   ],
   "client": [
-    "solar.LevelRendererMixin"
   ],
   "minVersion": "0.8"
 }

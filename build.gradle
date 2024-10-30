@@ -26,8 +26,6 @@ minecraft {
 
     runs {
         configureEach {
-            workingDirectory project.file('run')
-
             property 'forge.logging.markers', 'REGISTRIES'
 
             property 'forge.logging.console.level', 'debug'
@@ -40,12 +38,13 @@ minecraft {
         }
 
         client {
+            workingDirectory project.file('run')
             property 'forge.enabledGameTestNamespaces', mod_id
         }
 
         server {
+            workingDirectory project.file('run_server')
             property 'forge.enabledGameTestNamespaces', mod_id
-            args '--nogui'
         }
 
         gameTestServer {

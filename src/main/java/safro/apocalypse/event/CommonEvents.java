@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.Mod;
 import safro.apocalypse.Apocalypse;
 import safro.apocalypse.api.ApocalypseData;
 import safro.apocalypse.api.ApocalypseType;
+import safro.apocalypse.command.ResetApocalypseCommand;
 import safro.apocalypse.command.StartApocalypseCommand;
 
 @Mod.EventBusSubscriber(modid = Apocalypse.MODID)
@@ -30,5 +31,6 @@ public class CommonEvents {
     @SubscribeEvent
     public static void registerCommands(RegisterCommandsEvent event) {
         StartApocalypseCommand.register(event.getDispatcher());
+        ResetApocalypseCommand.register(event.getDispatcher());
     }
 }

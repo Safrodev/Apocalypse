@@ -49,6 +49,15 @@ public class ApocalypseData extends SavedData {
         return false;
     }
 
+    public void clear() {
+        this.tick = 0;
+        this.countdownTick = -1;
+        this.started = false;
+        this.type = null;
+        this.setDirty();
+        NetworkHelper.sendToAllPlayers(new SyncApocalypsePacket(this.type, this.countdownTick, this.started, this.tick));
+    }
+
     public void tick(ServerLevel overworld) {
         if (!this.started) {
             if (this.countdownTick > 0) {
@@ -90,9 +99,8 @@ public class ApocalypseData extends SavedData {
         return this.countdownTick;
     }
 
-    // TODO: Set back to 24000L after testing
     public int getDaysSinceStart() {
-        return this.started ? (int)(this.tick / 1200L) : -1;
+        return this.started ? (int)(this.tick / 24000L) : -1;
     }
 
     public static ApocalypseData load(CompoundTag tag) {
