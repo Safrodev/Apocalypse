@@ -1,7 +1,6 @@
 package safro.apocalypse.event;
 
 import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -17,7 +16,7 @@ public class CommonEvents {
 
     public static void startApocalypse(ApocalypseType type, ServerLevel level) {
         if (type == ApocalypseType.WITHER_STORM && ModList.get().isLoaded("witherstormmod")) {
-            WitherStormEvent.spawn(level);
+            WitherStormHandler.spawn(level);
         }
     }
 

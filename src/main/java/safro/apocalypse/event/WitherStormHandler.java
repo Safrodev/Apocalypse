@@ -14,7 +14,7 @@ import nonamecrackers2.witherstormmod.common.init.WitherStormModEntityTypes;
 import nonamecrackers2.witherstormmod.common.init.WitherStormModSoundEvents;
 import safro.apocalypse.ApocalypseConfig;
 
-public class WitherStormEvent {
+public class WitherStormHandler {
 
     public static void spawn(ServerLevel world) {
         if (world.getDifficulty() != Difficulty.PEACEFUL) {

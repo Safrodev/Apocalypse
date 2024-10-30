@@ -7,6 +7,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
 import safro.apocalypse.event.CommonEvents;
+import safro.apocalypse.event.MeteorShowerHandler;
 import safro.apocalypse.network.NetworkHelper;
 import safro.apocalypse.network.SyncApocalypsePacket;
 
@@ -68,10 +69,17 @@ public class ApocalypseData extends SavedData {
             this.tick++;
 
             if (this.tick % 20 == 0) {
+                this.tickEvent(overworld); // tick events every second to not overstress the server
                 this.setDirty();
             }
         }
         NetworkHelper.sendToAllPlayers(new SyncApocalypsePacket(this.type, this.countdownTick, this.started, this.tick));
+    }
+
+    private void tickEvent(ServerLevel level) {
+        if (this.type == ApocalypseType.METEOR_SHOWER) {
+            MeteorShowerHandler.tick(level);
+        }
     }
 
     public boolean hasStarted(ApocalypseType match) {

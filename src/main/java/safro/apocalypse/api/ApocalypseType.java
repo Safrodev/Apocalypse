@@ -15,8 +15,7 @@ import java.util.function.Supplier;
 public enum ApocalypseType {
     SOLAR_APOCALYPSE(() -> true, ApocalypseConfig.saStage1, ApocalypseConfig.saStage2, ApocalypseConfig.saStage3),
     WITHER_STORM(() -> ModList.get().isLoaded("witherstormmod")),
-    ZOMBIE_HORDE(() -> true),
-    BLIZZARD(() -> true);
+    METEOR_SHOWER(() -> true);
 
     final Supplier<Boolean> condition;
     final int[] stages;

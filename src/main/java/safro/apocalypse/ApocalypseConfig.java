@@ -20,8 +20,11 @@ public class ApocalypseConfig {
     private static final ForgeConfigSpec.IntValue SA_STAGE_3 = BUILDER.comment("Number of days until stage 3 of the Solar Apocalypse begins.")
             .defineInRange("saStage3", 6, 0, Integer.MAX_VALUE);
 
-    private static final ForgeConfigSpec.ConfigValue<List<? extends Integer>> WS_SPAWN = BUILDER.comment("The spawn coordinates for the Wither Storm Apocalypse event. Spawns at (0, 100, 0) by default.")
+    private static final ForgeConfigSpec.ConfigValue<List<? extends Integer>> WS_SPAWN = BUILDER.comment("The spawn coordinates for the Wither Storm Apocalypse. Spawns at (0, 100, 0) by default.")
             .defineList("witherStormCoords", List.of(0, 100, 0), ApocalypseConfig::isValidCoords);
+
+    private static final ForgeConfigSpec.DoubleValue METEOR_CHANCE = BUILDER.comment("The random chance for meteors to fall for the Meteor Apocalypse. The value should be entered as a decimal representation of a percent (ex. 0.05 = 5%).")
+            .defineInRange("meteorChance", 0.1, 0.001, 1.0);
 
     static final ForgeConfigSpec SPEC = BUILDER.build();
 
@@ -31,12 +34,15 @@ public class ApocalypseConfig {
 
     public static List<? extends Integer> witherStormCoords;
 
+    public static double meteorChance;
+
     @SubscribeEvent
     static void onLoad(final ModConfigEvent event) {
         saStage1 = SA_STAGE_1.get();
         saStage2 = SA_STAGE_2.get();
         saStage3 = SA_STAGE_3.get();
         witherStormCoords = WS_SPAWN.get();
+        meteorChance = METEOR_CHANCE.get();
     }
 
     private static boolean isValidCoords(Object object) {
