@@ -10,6 +10,7 @@ import safro.apocalypse.Apocalypse;
 import safro.apocalypse.api.ApocalypseData;
 import safro.apocalypse.api.ApocalypseType;
 import safro.apocalypse.command.ResetApocalypseCommand;
+import safro.apocalypse.command.SetDayApocalypseCommand;
 import safro.apocalypse.command.StartApocalypseCommand;
 
 @Mod.EventBusSubscriber(modid = Apocalypse.MODID)
@@ -32,5 +33,6 @@ public class CommonEvents {
     public static void registerCommands(RegisterCommandsEvent event) {
         StartApocalypseCommand.register(event.getDispatcher());
         ResetApocalypseCommand.register(event.getDispatcher());
+        SetDayApocalypseCommand.register(event.getDispatcher());
     }
 }

@@ -58,6 +58,13 @@ public class ApocalypseData extends SavedData {
         NetworkHelper.sendToAllPlayers(new SyncApocalypsePacket(this.type, this.countdownTick, this.started, this.tick));
     }
 
+    public void setDay(long day) {
+        if (this.started) {
+            this.tick = day * 24000L;
+            this.setDirty();
+        }
+    }
+
     public void tick(ServerLevel overworld) {
         if (!this.started) {
             if (this.countdownTick > 0) {
@@ -92,7 +99,11 @@ public class ApocalypseData extends SavedData {
     }
 
     public boolean hasStarted(ApocalypseType match) {
-        return this.started && this.type != null && match == this.type;
+        return this.hasStarted() && this.type != null && match == this.type;
+    }
+
+    public boolean hasStarted() {
+        return this.started;
     }
 
     public long getCountdownTick() {

@@ -5,6 +5,8 @@
   "command.apocalypse.invalid_type": "This apocalypse type is invalid or unavailable. You may need to install another mod.",
   "command.apocalypse.already_begun": "An apocalypse has already started, you may not start a new one.",
   "command.apocalypse.start": "The Apocalypse will begin in %s %s!",
+  "command.apocalypse.not_started": "Cannot set the day when an Apocalypse hasn't started.",
   "command.apocalypse.start.system": "Starting %s in %s %s.",
-  "command.apocalypse.clear": "Cleared current Apocalypse."
+  "command.apocalypse.clear": "Cleared current Apocalypse.",
+  "command.apocalypse.set_day": "Set the Apocalypse day to %s"
 }
