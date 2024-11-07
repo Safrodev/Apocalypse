@@ -18,7 +18,9 @@
     "solar.FluidTypeMixin",
     "solar.FluidMixin",
     "solar.MobMixin",
-    "solar.PlayerMixin"
+    "solar.PlayerMixin",
+    "solar.BlockMixin",
+    "solar.BlockBehaviourMixin"
   ],
   "client": [
   ],
